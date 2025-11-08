@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Email Spoofing Detection Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #f5f7fa;
+      font-family: "Segoe UI", sans-serif;
+    }
+    .navbar {
+      background: linear-gradient(90deg, #aec5f5ec, #44a7ed);
+    }
+    .navbar-brand {
+      color: white !important;
+      font-weight: bold;
+    }
+    .nav-link {
+      color: #e0e0e0 !important;
+    }
+    .nav-link:hover {
+      color: white !important;
+    }
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: #777;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">Email Spoofing Detector</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page content -->
+  <main class="container my-4">
+    
+<div class="container mt-5">
+    <h2 class="text-center text-primary mb-4"> Email Spoofing Report</h2>
+
+    <div class="card shadow-lg border-0 rounded-3">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="text-secondary mb-0">
+                    <strong>Subject:</strong> Urgent! Verify your account
+                </h5>
+                <span class="badge 
+                    bg-danger">
+                    Suspicious
+                </span>
+            </div>
+
+            <p><strong>Timestamp (UTC):</strong> 2025-11-08T08:53:22.007081Z</p>
+            <p><strong>Confidence Score:</strong> 25.0%</p>
+            <p><strong>Recommended Action:</strong> High risk — do NOT click anything.</p>
+
+            <hr>
+            <h5 class="text-primary mt-3">Detailed Checks</h5>
+            <ul class="list-group mb-3">
+                
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    SPF
+                    <span class="badge 
+                        bg-danger
+                        ">
+                        fail
+                    </span>
+                </li>
+                
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    DKIM
+                    <span class="badge 
+                        bg-danger
+                        ">
+                        fail
+                    </span>
+                </li>
+                
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    DMARC
+                    <span class="badge 
+                        bg-danger
+                        ">
+                        fail
+                    </span>
+                </li>
+                
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    RETURNPATH
+                    <span class="badge 
+                        bg-success
+                        ">
+                        pass
+                    </span>
+                </li>
+                
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    KEYWORDS
+                    <span class="badge 
+                        bg-danger
+                        ">
+                        fail
+                    </span>
+                </li>
+                
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    ATTACHMENTS
+                    <span class="badge 
+                        bg-success
+                        ">
+                        pass
+                    </span>
+                </li>
+                
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    HEADER_ANOMALIES
+                    <span class="badge 
+                        bg-info">
+                        ok
+                    </span>
+                </li>
+                
+            </ul>
+
+            
+            <div class="alert alert-warning">
+                <h6 class="fw-bold mb-2">Potential Issues:</h6>
+                <ul class="mb-0">
+                    
+                    <li>SPF failed</li>
+                    
+                    <li>DKIM failed</li>
+                    
+                    <li>DMARC failed</li>
+                    
+                    <li>Phishing keywords: urgent, verify, account</li>
+                    
+                </ul>
+            </div>
+            
+
+            
+            <h5 class="text-primary mt-4">Explanations</h5>
+            <ul>
+                
+                <li><strong>SPF:</strong> SPF failed or missing.</li>
+                
+                <li><strong>DKIM:</strong> DKIM failed or missing.</li>
+                
+                <li><strong>DMARC:</strong> DMARC failed or missing.</li>
+                
+                <li><strong>RETURNPATH:</strong> Return-Path matches From domain (or not present).</li>
+                
+                <li><strong>KEYWORDS:</strong> Phishing-like words found.</li>
+                
+                <li><strong>ATTACHMENTS:</strong> No executable attachments found.</li>
+                
+            </ul>
+            
+
+            <div class="mt-4 text-center">
+                
+                <a href="/reports" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-left"></i> Back to History
+                </a>
+            </div>
+
+            <details class="mt-4">
+                <summary class="fw-bold text-secondary cursor-pointer">Show Raw Email Data</summary>
+                <pre class="bg-light p-3 border rounded mt-2" style="max-height: 300px; overflow:auto;">From: fake@badsite.com
+Return-Path: spoof@badsite.com
+To: user@domain.com
+Subject: Urgent! Verify your account
+Received-SPF: fail
+Authentication-Results: spf=fail; dkim=fail; dmarc=fail
+Please click this link to verify your account.</pre>
+            </details>
+        </div>
+    </div>
+</div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Email Spoofing Detection System — Developed for Cyber Security Project</p>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

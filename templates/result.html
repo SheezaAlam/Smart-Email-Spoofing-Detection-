@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Analysis Result</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <nav class="topnav">
+      <a href="{{ url_for('index') }}">New Analysis</a> |
+      <a href="{{ url_for('dashboard') }}">Dashboard</a> |
+      <a href="{{ url_for('reports_list') }}">History</a>
+    </nav>
+
+    <h1>Analysis Result</h1>
+
+    {% set status = result.status %}
+<div class="card verdict-card {{ status|lower|replace(' ', '-') }}">
+      <h2>{{ status }}</h2>
+      <p>Confidence Score: <strong>{{ result.confidence }}%</strong></p>
+    </div>
+
+    <div class="card">
+      <h3>Action for you</h3>
+      <div class="note">{{ result.action }}</div>
+    </div>
+
+    <div class="card">
+      <h3>Top reasons flagged</h3>
+      <ul>
+        {% for r in result.reasons %}
+          <li>{{ r }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Raw headers (highlighted)</h3>
+      <pre id="rawHeader" class="raw">{{ raw }}</pre>
+      <p class="note">Highlighted items are the parts of the header that triggered rules.</p>
+    </div>
+
+    <div class="card">
+      <h3>Quick definitions (for non-technical)</h3>
+      <table class="small">
+        <tr><th>SPF</th><td>Who is allowed to send mail for this domain.</td></tr>
+        <tr><th>DKIM</th><td>Signature proving message integrity.</td></tr>
+        <tr><th>DMARC</th><td>Policy telling receivers how to treat failing mail.</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <a class="btn" href="{{ url_for('reports_list') }}">View History</a>
+     
+  </div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+  // run header highlighter with highlights from analysis if available
+  (function(){
+    const raw = document.getElementById('rawHeader')?.textContent || '';
+    if(raw && typeof highlightHeader === 'function'){
+      highlightHeader(raw);
+    }
+  })();
+</script>
+</body>
+</html>

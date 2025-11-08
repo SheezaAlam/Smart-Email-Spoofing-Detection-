@@ -1,0 +1,52 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center text-primary mb-4"> Email Analysis History</h2>
+
+    {% if rows %}
+    <div class="table-responsive shadow rounded">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-primary text-center">
+                <tr>
+                    <th>ID</th>
+                    <th>Timestamp (UTC)</th>
+                    <th>Subject</th>
+                    <th>Verdict</th>
+                    <th>Score (%)</th>
+                    <th>Summary</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                <tr>
+                    <td class="text-center">{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] or '-' }}</td>
+                    <td class="fw-bold 
+                        {% if row[3] == 'Legitimate' %}text-success
+                        {% elif row[3] == 'Possibly spoofed' %}text-warning
+                        {% else %}text-danger{% endif %}">
+                        {{ row[3] }}
+                    </td>
+                    <td class="text-center">{{ "%.1f"|format(row[4]) }}</td>
+                    <td>{{ row[5] or '-' }}</td>
+                    <td class="text-center">
+                        <a href="{{ url_for('view_report', rid=row[0]) }}" class="btn btn-sm btn-info me-1">
+                            <i class="bi bi-eye"></i> View
+                        </a>
+                        
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center mt-5">
+        No reports found. Please analyze an email first.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

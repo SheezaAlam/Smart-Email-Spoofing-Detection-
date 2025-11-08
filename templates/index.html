@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Email Header Analyzer </title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <nav class="topnav">
+      <a href="{{ url_for('index') }}">New Analysis</a> |
+      <a href="{{ url_for('dashboard') }}">Dashboard</a> |
+      <a href="{{ url_for('reports_list') }}">History</a>
+    </nav>
+
+    <h1>Email Spoof Detector</h1>
+
+    <form action="{{ url_for('analyze') }}" method="post" enctype="multipart/form-data" class="card">
+      <label for="eml"><strong>Paste raw headers or full .eml content</strong></label>
+      <textarea id="eml" name="eml" rows="10" placeholder="Paste headers or .eml here"></textarea>
+      <div class="row">
+        <input type="file" name="file">
+        <button type="submit">Analyze</button>
+      </div>
+    </form>
+
+    {% if samples %}
+    <div class="card">
+      <h3>Demo Samples</h3>
+      <div class="sample-grid">
+        {% for s in samples %}
+          <form method="post" action="{{ url_for('analyze') }}">
+            <input type="hidden" name="eml" value="{{ s.eml|e }}">
+            <button type="submit" class="btn ghost">{{ s.name }}</button>
+          </form>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center text-primary mb-4"> Email Spoofing Report</h2>
+
+    <div class="card shadow-lg border-0 rounded-3">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="text-secondary mb-0">
+                    <strong>Subject:</strong> {{ headers.get('Subject', '-') }}
+                </h5>
+                <span class="badge 
+                    {% if verdict == 'Legitimate' %}bg-success
+                    {% elif verdict == 'Possibly spoofed' %}bg-warning text-dark
+                    {% else %}bg-danger{% endif %}">
+                    {{ verdict }}
+                </span>
+            </div>
+
+            <p><strong>Timestamp (UTC):</strong> {{ timestamp }}</p>
+            <p><strong>Confidence Score:</strong> {{ score }}%</p>
+            <p><strong>Recommended Action:</strong> {{ action }}</p>
+
+            <hr>
+            <h5 class="text-primary mt-3">Detailed Checks</h5>
+            <ul class="list-group mb-3">
+                {% for key, value in analysis.checks.items() %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ key.upper() }}
+                    <span class="badge 
+                        {% if value == 'pass' %}bg-success
+                        {% elif value == 'fail' %}bg-danger
+                        {% elif value == 'neutral' %}bg-secondary
+                        {% else %}bg-info{% endif %}">
+                        {{ value }}
+                    </span>
+                </li>
+                {% endfor %}
+            </ul>
+
+            {% if analysis.reasons %}
+            <div class="alert alert-warning">
+                <h6 class="fw-bold mb-2">Potential Issues:</h6>
+                <ul class="mb-0">
+                    {% for reason in analysis.reasons %}
+                    <li>{{ reason }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {% if analysis.explanations %}
+            <h5 class="text-primary mt-4">Explanations</h5>
+            <ul>
+                {% for k, v in analysis.explanations.items() %}
+                <li><strong>{{ k.upper() }}:</strong> {{ v }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            <div class="mt-4 text-center">
+                
+                <a href="{{ url_for('reports_list') }}" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-left"></i> Back to History
+                </a>
+            </div>
+
+            <details class="mt-4">
+                <summary class="fw-bold text-secondary cursor-pointer">Show Raw Email Data</summary>
+                <pre class="bg-light p-3 border rounded mt-2" style="max-height: 300px; overflow:auto;">{{ raw }}</pre>
+            </details>
+        </div>
+    </div>
+</div>
+{% endblock %}

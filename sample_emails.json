@@ -1,0 +1,17 @@
+[
+  {
+    "id": "legit",
+    "name": "Legitimate Email",
+    "eml": "From: verified@example.com\nReturn-Path: verified@example.com\nTo: user@domain.com\nSubject: Hello\nReceived-SPF: pass\nAuthentication-Results: spf=pass; dkim=pass; dmarc=pass\nThis is a normal message."
+  },
+  {
+    "id": "spoofed",
+    "name": "Spoofed Email",
+    "eml": "From: fake@badsite.com\nReturn-Path: spoof@badsite.com\nTo: user@domain.com\nSubject: Urgent! Verify your account\nReceived-SPF: fail\nAuthentication-Results: spf=fail; dkim=fail; dmarc=fail\nPlease click this link to verify your account."
+  },
+  {
+    "id": "ambiguous",
+    "name": "Ambiguous Email",
+    "eml": "From: newsletter@example.net\nReturn-Path: newsletter@example.net\nTo: user@domain.com\nSubject: Weekly update\nReceived-SPF: neutral\nNo DKIM-Signature\nNo DMARC record\nContains links and promotional text."
+  }
+]

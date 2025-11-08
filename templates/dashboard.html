@@ -1,0 +1,135 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Dashboard — Email Analyses</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="topnav">
+      <a href="{{ url_for('index') }}">New Analysis</a> |
+      <a href="{{ url_for('reports_list') }}">History</a>
+    </nav>
+
+    <h1>Smart Dashboard</h1>
+    <p class="note">Live overview — updates automatically.</p>
+
+    <div class="kpi-grid">
+      <div class="card kpi">
+        <div class="kpi-value" id="totalEmails">0</div>
+        <div class="kpi-label">Total Emails</div>
+      </div>
+      <div class="card kpi">
+        <div class="kpi-value" id="spfSuccess">0%</div>
+        <div class="kpi-label">SPF Success</div>
+      </div>
+      <div class="card kpi">
+        <div class="kpi-value" id="dkimSuccess">0%</div>
+        <div class="kpi-label">DKIM Success</div>
+      </div>
+      <div class="card kpi">
+        <div class="kpi-value" id="dmarcSuccess">0%</div>
+        <div class="kpi-label">DMARC Success</div>
+      </div>
+    </div>
+
+    <div class="card charts">
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div style="flex:1;min-width:260px">
+          <h3>Auth Success Breakdown</h3>
+          <canvas id="donutChart"></canvas>
+        </div>
+        <div style="flex:1;min-width:260px">
+          <h3>Verdict Counts</h3>
+          <canvas id="barChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Recent Analyses</h3>
+      <table class="reports-table" id="recentTable">
+        <thead>
+          <tr><th>ID</th><th>Subject</th><th>Verdict</th><th>Score</th><th>Time</th></tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="5">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<script>
+let donutChart, barChart;
+
+function buildCharts(){
+  const dctx = document.getElementById('donutChart').getContext('2d');
+  donutChart = new Chart(dctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['SPF','DKIM','DMARC'],
+      datasets:[{data:[0,0,0], backgroundColor:['#16a34a','#f59e0b','#0ea5e9']}]
+    }
+  });
+
+  const bctx = document.getElementById('barChart').getContext('2d');
+  barChart = new Chart(bctx, {
+    type:'bar',
+    data:{
+      labels:['Legitimate','Possibly spoofed','Suspicious'],
+      datasets:[{label:'Count', data:[0,0,0], backgroundColor:['#10b981','#f59e0b','#ef4444']}]
+    },
+    options:{scales:{y:{beginAtZero:true,precision:0}}}
+  });
+}
+
+async function updateDashboard(){
+  try{
+    const r = await fetch('{{ url_for("dashboard_data") }}');
+    const d = await r.json();
+    document.getElementById('totalEmails').textContent = d.total_emails;
+    document.getElementById('spfSuccess').textContent = d.spf_success + '%';
+    document.getElementById('dkimSuccess').textContent = d.dkim_success + '%';
+    document.getElementById('dmarcSuccess').textContent = d.dmarc_success + '%';
+
+    donutChart.data.datasets[0].data = [d.spf_success, d.dkim_success, d.dmarc_success];
+    donutChart.update();
+
+    const vc = d.verdict_counts || {};
+    barChart.data.datasets[0].data = [vc.Legitimate||0, vc['Possibly spoofed']||0, vc.Suspicious||0];
+    barChart.update();
+
+    // recent table
+    const tbody = document.querySelector('#recentTable tbody');
+    tbody.innerHTML = '';
+    if(d.recent.length===0){
+      tbody.innerHTML = '<tr><td colspan="5">No recent analyses</td></tr>';
+    } else {
+      for(const it of d.recent){
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${it.id||'-'}</td>
+          <td>${it.subject||'-'}</td>
+          <td>${it.verdict||'-'}</td>
+          <td>${it.score||0}%</td>
+          <td>${it.timestamp||'-'}</td>
+        `;
+        tbody.appendChild(tr);
+      }
+    }
+  }catch(e){
+    console.error(e);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  buildCharts();
+  updateDashboard();
+  setInterval(updateDashboard, 5000);
+});
+</script>
+</body>
+</html>
