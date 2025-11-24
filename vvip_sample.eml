@@ -1,0 +1,92 @@
+Return-Path: <bounce@mg.ziprecruiter.com>
+Received: from mail-int1.mxserver.example (mail-int1.mxserver.example [203.0.113.21])
+	by inbound-gateway.example.net (Postfix) with ESMTPS id 3F2A9E1B2
+	for <user@example.com>; Mon, 03 Nov 2025 08:12:34 +0000 (UTC)
+Received: from mx1.mailgun.org (mx1.mailgun.org [198.51.100.44])
+	by mail-int1.mxserver.example (Postfix) with ESMTPS id A7B1C2D3
+	for <user@example.com>; Mon, 03 Nov 2025 08:12:33 +0000 (UTC)
+Received-SPF: pass (mail-int1.mxserver.example: domain of mg.ziprecruiter.com designates 198.51.100.44 as permitted sender) client-ip=198.51.100.44; envelope-from=bounce@mg.ziprecruiter.com; helo=mx1.mailgun.org;
+Authentication-Results: inbound-gateway.example.net;
+	dkim=pass header.d=ziprecruiter.com header.s=mail header.b="kT9r..."; 
+	spf=pass (inbound-gateway.example.net: domain of mg.ziprecruiter.com designates 198.51.100.44 as permitted sender) smtp.mailfrom=bounce@mg.ziprecruiter.com;
+	dmarc=pass (p=none; dis=none) header.from=ziprecruiter.com;
+	arc=none
+ARC-Seal: i=1; a=rsa-sha256; t=1700000000; cv=none; d=example-arc.org; s=seal; b=EXAMPLESEAL==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=example-arc.org; s=ams; h=from:subject:date:message-id:to:mime-version:content-type; bh=EXAMPLEBH==; b=EXAMPLEBMSG==
+ARC-Authentication-Results: i=1; auth=pass; dkim=pass; spf=pass; dmarc=pass
+Received: from smtp-frontend.ziprecruiter.com (smtp-frontend.ziprecruiter.com [198.51.100.10])
+	by mx1.mailgun.org (Postfix) with ESMTPS id 9C8D7B6A
+	for <user@example.com>; Mon, 03 Nov 2025 08:12:30 +0000 (UTC)
+Received: from mg-sender-01.ziprecruiter.internal (unknown [10.0.5.22])
+	by smtp-frontend.ziprecruiter.com (Postfix) with ESMTPS id ZXY12345
+	for <bounce@mg.ziprecruiter.com>; Mon, 03 Nov 2025 08:12:29 +0000 (UTC)
+Authentication-Results: smtp-frontend.ziprecruiter.com;
+	spf=pass (smtp-frontend permitted sender) smtp.mailfrom=bounce@mg.ziprecruiter.com;
+	dkim=pass (signature validated) header.d=ziprecruiter.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziprecruiter.com; s=mail;
+	t=1700000000; bh=EXAMPLEBH==; h=from:to:subject:date:message-id:from:reply-to;
+	b=EXAMPLEDKIMSIGNATURE==
+Received: from [192.0.2.45] (unknown [192.0.2.45])
+	by mg-sender-01.ziprecruiter.internal (Postfix) with ESMTP id LOCAL12345
+	for <bounce@mg.ziprecruiter.com>; Mon, 03 Nov 2025 08:12:28 +0000 (UTC)
+X-Originating-IP: [192.0.2.45]
+From: "ZipRecruiter Support" <no-reply@ziprecruiter.com>
+Reply-To: support@ziprecruiter.com
+To: user@example.com
+Subject: Important update to your ZipRecruiter account
+Message-ID: <20251103T081228.abcdef@mg.ziprecruiter.com>
+Date: Mon, 03 Nov 2025 08:12:28 +0000
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="----=_NextPart_000_0000"
+
+List-Unsubscribe: <mailto:unsubscribe@mg.ziprecruiter.com?subject=unsubscribe>, <https://ziprecruiter.com/unsubscribe?id=abc123>
+Precedence: bulk
+Feedback-ID: ziprecruiter:transactional:12345
+X-Mailer: ZipRecruiterMailer/2.4.1
+X-Original-From: no-reply@ziprecruiter.com
+X-Spam-Status: No, score=0.1
+X-Spam-Flag: NO
+
+------=_NextPart_000_0000
+Content-Type: multipart/alternative; boundary="----=_NextPart_alt_001"
+
+------=_NextPart_alt_001
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+
+Dear User,
+
+We recently updated our terms of service. Please review the changes by visiting the link below or by checking your account.
+
+https://ziprecruiter.com/account/updates?id=abc123
+
+If you did not request this change, please contact support.
+
+Regards,
+ZipRecruiter Support
+
+------=_NextPart_alt_001
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <body>
+    <p>Dear User,</p>
+    <p>We recently updated our <strong>terms of service</strong>. Please review the changes by visiting the link below or by checking your account.</p>
+    <p><a href="https://ziprecruiter.com/account/updates?id=abc123">View updates</a></p>
+    <p>If you did not request this change, please contact support.</p>
+    <hr>
+    <p>Regards,<br>ZipRecruiter Support</p>
+  </body>
+</html>
+
+------=_NextPart_alt_001--
+
+------=_NextPart_000_0000
+Content-Type: application/pdf; name="terms_update.pdf"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="terms_update.pdf"
+
+JVBERi0xLjQKJcfs... (base64 PDF placeholder - replace with real base64 if you want an actual file)
+
+------=_NextPart_000_0000--
